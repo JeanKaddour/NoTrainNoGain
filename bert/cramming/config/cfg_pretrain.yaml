@@ -1,0 +1,29 @@
+# Configuration defaults
+# Settings are separated into hyperparameters for architecture, data, implementation and train/eval hyperparams
+# default settings run a sanity check with a small model and test data.
+defaults:
+  - arch: bert-c5
+  - data: c4-subset-random #bookcorpus-wikipedia
+  - impl: torch-default
+  - wandb: default
+  - train: bert-o3
+  - _self_
+  - override hydra/job_logging: custom
+
+base_dir: outputs
+hydra:
+  sweep:
+    dir: ${base_dir}/${name}/pretrain/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  run:
+    dir: ${base_dir}/${name}/pretrain/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  job:
+    chdir: True
+
+seed: 0 # Optional: Set initial seed
+name: default # A name for this run [will be used for the summary table and outputs folder]
+
+# If a number, then the total compute budget in hours. If "steps", then instead train
+# for the number of steps given by train.steps.
+budget: 24
+# debug implementation by running every loop just once:
+dryrun: False

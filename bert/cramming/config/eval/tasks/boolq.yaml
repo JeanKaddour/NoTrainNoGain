@@ -1,0 +1,6 @@
+# dataset-specific settings
+boolq:
+  collection: super_glue
+  regression: False
+  structure: [question, passage]
+  label:

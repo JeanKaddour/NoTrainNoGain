@@ -1,0 +1,12 @@
+arch_modifications: null
+evaluation_set: validation # always keep this at validation except for the final run
+
+checkpoint: latest
+path: ~/data/ # Path for caches of datasets and tokenizers
+max_seq_length: 128
+model_pth: null
+
+# Default options:
+# These can be overwritten by specific tasks
+batch_size: 96
+batch_size_ramp: 0

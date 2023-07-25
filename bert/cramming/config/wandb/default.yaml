@@ -1,0 +1,6 @@
+enabled: True
+entity: "" # change this optionally
+project: cramming-pretrain
+tags: []
+# If set, resume from the given wandb id.
+resume:

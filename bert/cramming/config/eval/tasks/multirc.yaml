@@ -1,0 +1,6 @@
+# dataset-specific settings
+multirc:
+  collection: super_glue
+  regression: False
+  structure: [paragraph, question, answer]
+  label:

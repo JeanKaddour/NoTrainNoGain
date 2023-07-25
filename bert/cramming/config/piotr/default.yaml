@@ -1,0 +1,84 @@
+defaults:
+  - _self_
+  - task: pt
+
+# Experiment args
+mode: 'pt'
+device: gpu
+eval_only: false
+predict_only: false
+seed: 2137
+budget: 24
+
+model:
+  name: 'google/t5-v1_1-base'
+  checkpoint_path: ''
+  dropout: 0.0
+  random_init: true
+  compile: false # Pytorch 2.0
+  num_active_layers: -1
+
+data:
+  input_length: 512
+  mlm_probability: 0.15
+  mean_noise_span_length: 3.0
+  num_workers: 8
+  dataset_name: 'c4'
+  config_name: 'en'
+  streaming: true
+
+optim:
+  name: adamwscale
+  base_lr: 2e-2
+  batch_size: 144
+  total_steps: 65536
+  epochs: -1 # If it's > 0 it overwrites total_steps
+  warmup_steps: 10000
+  lr_scheduler: cosine-budget
+  weight_decay: 0.0
+  grad_clip: 1.0
+  grad_acc: 2
+  final_cosine: 1e-5
+
+stacking:
+  enabled: true
+  num_initial_layers: 3
+  num_layers_to_add: 12
+  scheduler: manual
+  adjust_lr: false
+  freeze_bottom_layers: false
+  manual_scheduler:
+    function: manual
+    balance_factor: 1.0
+  T_max_factor: 0.75
+  copy_optim_states: false
+  step_fractions: [0.125,0.3]
+  doubling: true
+  doubling_interpolation: false
+  reset_optim: true
+
+eval:
+  every_steps: 5000
+  steps: 500
+  eval_stacked_model: false
+
+checkpoint:
+  every_steps: 1000
+  start: 65000
+
+logging:
+  wandb: true
+  wandb_creds:
+      name: 't5'
+      project: 't5'
+      entity: '' # change this optionally
+      tags: 'baseline'
+  every_steps: 100
+  grad_l2: true
+  weights_l2: true
+
+hydra:
+  job:
+    chdir: True
+  run:
+    dir: ./logs/${now:%Y-%m-%d}/${now:%H-%M-%S}

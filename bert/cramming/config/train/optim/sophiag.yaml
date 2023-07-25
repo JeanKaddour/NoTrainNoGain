@@ -1,0 +1,5 @@
+type: SophiaG
+lr: 1e-3
+weight_decay: 0.01
+rho: 0.04
+bs: 196608 # 128 * 1536

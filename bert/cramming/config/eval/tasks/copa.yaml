@@ -1,0 +1,6 @@
+# dataset-specific settings
+copa:
+  collection: super_glue
+  regression: False
+  structure: [premise, choice1, choice2, question]
+  label:

@@ -1,0 +1,9 @@
+type: AdamW
+
+lr: 1e-3
+betas:
+  - 0.9
+  - 0.98
+weight_decay: 0.01
+amsgrad: False
+eps: 1e-12

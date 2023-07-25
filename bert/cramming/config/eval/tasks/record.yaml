@@ -1,0 +1,6 @@
+# dataset-specific settings
+record:
+  collection: super_glue
+  regression: False
+  structure: [passage, query]
+  label:

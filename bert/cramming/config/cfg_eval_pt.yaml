@@ -1,0 +1,39 @@
+# Configuration defaults
+# Settings are separated into hyperparameters for architecture, data, implementation and train/eval hyperparams
+defaults:
+  - arch: bert-c5
+  - data: c4-subset-random #bookcorpus-wikipedia
+  - impl: torch-default
+  - wandb: default
+  - eval: save_losses_rho_loss
+  - train: bert-o3
+  - _self_
+  - override hydra/job_logging: custom
+
+wandb:
+  project: cramming-eval
+
+base_dir: outputs
+hydra:
+  sweep:
+    dir: ${base_dir}/${name}/downstream/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  run:
+    dir: ${base_dir}/${name}/downstream/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  job:
+    chdir: True
+
+seed: 0 # Optional: Set initial seed
+
+# A name for this run [will draw the checkpoint from runs with this name
+# and use this name for the summary table and outputs folder]
+name: default
+budget: 96
+# debug implementation by running every loop just once:
+dryrun: False
+
+train:
+  validation_set:
+    enabled: true
+    fraction: 0.001
+
+truncate_dataset: 0

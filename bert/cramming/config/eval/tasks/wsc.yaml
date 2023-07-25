@@ -1,0 +1,6 @@
+# dataset-specific settings
+"wsc.fixed":
+  collection: super_glue
+  regression: False
+  structure: [text, span1_text, span2_text]
+  label:

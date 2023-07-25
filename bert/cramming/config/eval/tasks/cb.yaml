@@ -1,0 +1,6 @@
+# dataset-specific settings
+cb:
+  collection: super_glue
+  regression: False
+  structure: [premise, hypothesis]
+  label:

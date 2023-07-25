@@ -1,0 +1,14 @@
+name: ntng_bert
+dependencies:
+  - python=3.10
+  - cuda=11.7
+  - cuda-nvcc=11.7
+  - cuda-nvvp=11.7
+  - gxx=11.4.0
+  - pip=23.2
+  - pip:
+     - poetry==1.5.1
+channels:
+  - nvidia
+  - pytorch
+  - conda-forge

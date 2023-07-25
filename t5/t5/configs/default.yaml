@@ -1,0 +1,88 @@
+defaults:
+  - _self_
+  - task: pt
+  - local_env: default 
+
+# Experiment args
+mode: 'pt'
+device: gpu
+precision: 'no'
+gpus: 1
+eval_only: false
+predict_only: false
+seed: 2137
+fine_tune: false
+debug: false
+
+# NTNG args
+budget: 24
+every_seconds: 86400
+sophia_freq: 10
+
+stacking:
+  typ: none # {stack, drop}
+  num_initial_layers: 3
+  num_layers_to_add: 12
+  step_fractions: [0.125, 0.3]
+  doubling: true
+  gamma_factor: 20
+
+# Rest of nanoT5 args
+model:
+  klass: my_t5
+  name: 'google/t5-v1_1-base'
+  overwrite:
+    dropout_rate: 0.0
+  add_config:
+    share_positional_bias: False
+  checkpoint_path: ''
+  random_init: true
+  compile: true # Pytorch 2.0
+  
+data:
+  input_length: 512
+  mlm_probability: 0.15
+  mean_noise_span_length: 3.0
+  num_workers: 8
+  shuffle_buffer_size: 1000
+
+optim:
+  name: adamwscale # {sophia, lion}
+  base_lr: 2e-2
+  batch_size: 144
+  total_steps: 65536
+  epochs: -1 # If it's > 0 it overwrites total_steps
+  warmup_steps: 10000
+  lr_scheduler: cosine-budget
+  weight_decay: 0.0
+  grad_clip: 1.0
+  grad_acc: 2
+  final_cosine: 1e-5
+  rho: 2e-2
+
+eval:
+  every_steps: 500000 # Checkpoint in the end
+  steps: 500
+
+checkpoint:
+  every_steps: 500000 # Checkpoint in the end
+
+logging:
+  neptune: false
+  neptune_creds:
+    project:
+    api_token:
+    tags:
+  wandb: false
+  wandb_creds:
+    name:
+    project:
+    entity:
+  prefix: ''
+  every_steps: 100
+  grad_l2: true
+  weights_l2: true
+
+hydra:
+  job:
+    chdir: True
