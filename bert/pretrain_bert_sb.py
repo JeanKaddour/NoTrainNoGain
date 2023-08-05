@@ -4,7 +4,7 @@ import datetime
 import logging
 import os
 import time
-from collections import defaultdict
+from collections import defaultdict, deque
 
 import hydra
 import torch
@@ -135,7 +135,7 @@ def main_training_process(cfg, setup):
         if micro_batches is not None:
             for batch in micro_batches:
                 device_batch = model_engine.to_device(batch)
-                loss = model_engine.step(device_batch, step_seconds_counter, None)
+                loss = model_engine.step(device_batch, step_seconds_counter)
                 seconds_counter += get_time_per_step(cfg.impl.microbatch_size, model_engine.get_num_active_layers(), forward_only=False)
                 loss_vals.append(loss.detach())
                 if seconds_counter >= seconds_budget:
