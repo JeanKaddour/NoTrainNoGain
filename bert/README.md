@@ -37,19 +37,19 @@ Create and activate the Poetry environment:
 * `efficient_training` contains additional code for some of the efficient training methods
   * we recommend starting at the entry point scripts to understand how to use the code
 * `rst` includes helper code for tracking the Reference System Time (RST) metric
-* `ntng_assets` includes download scripts for the C4 Random subset and irreducible losses (for RHO-Loss)
-  * see [ntng_assets/README.md](../ntng_assets/README.md) for more details
 
 ## Experiment commands
 ### Pre-train
-First, download the randomized subset of the C4 dataset from our Dropbox: `python ntng/download_c4_subset.py`
+First, download the randomized subset of the C4 dataset from [our archive](https://doi.org/10.5281/zenodo.8279728):
+* `wget https://zenodo.org/record/8279728/files/c4-subset-random.tar.bz2`
+* `mkdir -p outputs/data`
+* `tar xvf c4-subset-random.tar.bz2 -C outputs/data/`
 
 If you would like to use [Weights & Biases](https://wandb.ai/site), configure this in `cramming/config/wandb/default.yaml`.
 
 #### Dynamic architectures
 * Baseline (FP16):
 `python pretrain_bert.py name={name} budget={budget in hours} seed={seed}`
-
 
 * Layer stacking:
 `python pretrain_bert.py name={name} budget={budget in hours} seed={seed} train.stacking.enabled=True`
@@ -67,7 +67,10 @@ Minipile and BCWK will be downloaded automatically from Hugging Face at the star
 
 ##### RHO-loss
 To acquire the irreducible losses you can either:
-  * Download ours: `python ntng_assets/download_il_losses.py`
+  * Download ours:
+    * `wget https://zenodo.org/record/8279728/files/il_losses_[dataset].tar` where `dataset` is `c4`, `bcwk`, or `mp`
+    * `mkdir -p outputs/il_losses`
+    * `tar xvf il_losses_[dataset].tar -C outputs/il_losses`
   * Train your own irreducible loss model and extract the losses:
     * `python pretrain_bert.py name=il_model budget={budget in hours} train.validation_set.il_model=True train.validation_set.fraction=0.2`
     * `python efficient_training/extract_il_losses.py name=il_model`
